@@ -1,0 +1,8 @@
+site_name: BoFoReDocum
+
+nav:
+ - Home: index.md
+ - Backend: backend.md
+ - Frontend: frontend.md
+theme:
+ name: solar
