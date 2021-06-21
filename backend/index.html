@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Backend - BoFoReDocum</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/solarized-dark.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">BoFoReDocum</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem active">
+                                <a href="./" class="nav-link">Backend</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../frontend/" class="nav-link">Frontend</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href=".." class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../frontend/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#bofore-backend" class="nav-link">BoFoRe Backend</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#scheme-bd" class="nav-link">SCHEME BD</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#models" class="nav-link">Models</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#urls" class="nav-link">URL's</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="bofore-backend">BoFoRe Backend</h1>
+<h2 id="scheme-bd">SCHEME BD</h2>
+<p><img alt="Scheme" src="../Scheme.png" title="Scheme" /></p>
+<p><em>Page 1  Scheme BD</em></p>
+<h2 id="models">Models</h2>
+<pre><code>@Entity
+@Table(name = &quot;users&quot;)
+data class User (
+        @Id
+        @GeneratedValue(strategy = GenerationType.AUTO)
+        val id: Long? = 0,
+
+        @Column(name=&quot;username&quot;)
+        var username: String?=null,
+
+        @Column(name=&quot;first_name&quot;)
+        var firstName: String?=null,
+
+        @Column(name=&quot;last_name&quot;)
+        var lastName: String?=null,
+
+        @Column(name=&quot;email&quot;)
+        var email: String?=null,
+
+        @Column(name=&quot;password&quot;)
+        var password: String?=null,
+
+        @Column(name=&quot;enabled&quot;)
+        var enabled: Boolean = false,
+
+        @ManyToMany(fetch = FetchType.EAGER)
+        @JoinTable(
+                name = &quot;users_roles&quot;,
+                joinColumns = [JoinColumn(name = &quot;user_id&quot;, referencedColumnName = &quot;id&quot;)],
+                inverseJoinColumns = [JoinColumn(name = &quot;role_id&quot;, referencedColumnName = &quot;id&quot;)]
+        )
+        var roles: Collection&lt;Role&gt;? = null
+)
+</code></pre>
+<pre><code>@Entity
+@Table(name = &quot;roles&quot;)
+data class Role (
+        @Id
+        @GeneratedValue(strategy = GenerationType.AUTO)
+        val id: Long,
+        @Column(name=&quot;name&quot;)
+        val name: String
+)
+
+</code></pre>
+<pre><code>@Entity
+@Table(name = &quot;bok&quot;)
+data class Book(
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO) var id: Long?,
+    @Column(name = &quot;author&quot;) var author: String?,
+    @Column(name = &quot;tittle&quot;) var tittle: String?,
+    @Column(name = &quot;genre&quot;) var genre: String?,
+    @Column(name=&quot;comment&quot;)
+    var commenta: String? = null,
+    @Column(name=&quot;isread&quot;)
+    var isRead: Boolean? = false
+) {
+    @ManyToMany(fetch = FetchType.EAGER)
+        @JoinTable(
+                name = &quot;users_books&quot;,
+                joinColumns = [JoinColumn(name = &quot;user_id&quot;, referencedColumnName = &quot;id&quot;)],
+                inverseJoinColumns = [JoinColumn(name = &quot;book_id&quot;, referencedColumnName = &quot;id&quot;)]
+        )
+        var books: Collection&lt;User&gt;? = null
+}
+</code></pre>
+<h2 id="urls">URL's</h2>
+<pre><code>routes: [
+      {
+        path: '/',
+        name: 'Home',
+        component: Home
+      },
+      {
+        path: '/home',
+        name: 'Home',
+        component: Home
+      },
+      {
+        path: '/login',
+        name: 'SignIn',
+        component: SignIn
+      },
+      {
+        path: '/register',
+        name: 'SignUp',
+        component: SignUp
+      },
+      {
+        path: '/user',
+        name: 'UserPage',
+        component: UserPage
+      },
+      {
+        path: '/admin',
+        name: 'AdminPage',
+        component: AdminPage
+      },
+      {
+        path: '/email',
+        name: 'EmailPage',
+        component: EmailPage
+      },
+      {
+        path: '/book',
+        name: 'Book',
+        component: BookPage
+      },
+      {
+        path: '/book/addnew',
+        name: 'AddBook',
+        component: AddBook
+      },
+      {
+        path: '/book/showall',
+        name: 'SeeBooks',
+        component: SeeBooks
+      },
+      {
+        path: '/book/rand',
+        name: 'RandBook',
+        component: RandBook
+      },
+      {
+        path: '/book/allread',
+        name: 'SeeReadBooks',
+        component: SeeReadBooks
+      },
+      {
+        path: '/book/allnotread',
+        name: 'SeeNotReadBooks',
+        component: SeeNotReadBooks
+      }
+
+    ]
+}) 
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
